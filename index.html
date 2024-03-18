@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Progress Bars</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Poppins', sans-serif;
+			background-color: #f5f5f5;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		.container {
+			background-color: white;
+			padding: 40px;
+			border-radius: 10px;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+			text-align: center;
+		}
+
+		.progress-bar {
+			width: 400px;
+			height: 30px;
+			background-color: #eee;
+			border-radius: 15px;
+			position: relative;
+			margin-bottom: 20px;
+			overflow: hidden;
+		}
+
+		.progress {
+			height: 100%;
+			background-color: #4CAF50;
+			border-radius: 15px;
+			text-align: center;
+			color: white;
+			position: absolute;
+			left: 0;
+			top: 0;
+			transition: width 0.5s ease-in-out;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.label {
+			font-size: 16px;
+			font-weight: 600;
+			margin-bottom: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Progress Bars</h1>
+		<div>
+			<div class="label">Hour</div>
+			<div id="hourProgress" class="progress-bar">
+				<div class="progress" style="width: 0%;"></div>
+			</div>
+		</div>
+		<div>
+			<div class="label">Day</div>
+			<div id="dayProgress" class="progress-bar">
+				<div class="progress" style="width: 0%;"></div>
+			</div>
+		</div>
+		<div>
+			<div class="label">Week</div>
+			<div id="weekProgress" class="progress-bar">
+				<div class="progress" style="width: 0%;"></div>
+			</div>
+		</div>
+		<div>
+			<div class="label">Year</div>
+			<div id="yearProgress" class="progress-bar">
+				<div class="progress" style="width: 0%;"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function updateProgressBars() {
+			const now = new Date();
+			const hourProgress = document.getElementById('hourProgress');
+			const dayProgress = document.getElementById('dayProgress');
+			const weekProgress = document.getElementById('weekProgress');
+			const yearProgress = document.getElementById('yearProgress');
+
+			// Update hour progress
+			const hour = now.getHours();
+			const minutesIntoHour = now.getMinutes() * 60 + now.getSeconds();
+			const hoursTotal = 3600; // Total seconds in an hour
+			const hourPercentage = (minutesIntoHour / hoursTotal) * 100;
+			hourProgress.querySelector('.progress').style.width = `${hourPercentage}%`;
+			hourProgress.querySelector('.progress').textContent = `${hourPercentage.toFixed(0)}%`;
+
+			// Update day progress
+			const day = now.getDate();
+			const month = now.getMonth() + 1; // Months are zero-indexed
+			const year = now.getFullYear();
+			const daysInMonth = new Date(year, month, 0).getDate();
+			const dayPercentage = (day / daysInMonth) * 100;
+			dayProgress.querySelector('.progress').style.width = `${dayPercentage}%`;
+			dayProgress.querySelector('.progress').textContent = `${dayPercentage.toFixed(0)}%`;
+
+			// Update week progress
+			const dayOfWeek = now.getDay(); // Sunday is 0, Saturday is 6
+			const weekPercentage = (dayOfWeek / 6) * 100;
+			weekProgress.querySelector('.progress').style.width = `${weekPercentage}%`;
+			weekProgress.querySelector('.progress').textContent = `${weekPercentage.toFixed(0)}%`;
+
+			// Update year progress
+			const daysInYear = isLeapYear(year) ? 366 : 365;
+			const dayOfYear = Math.floor((now - new Date(year, 0, 0)) / 86400000);
+			const yearPercentage = (dayOfYear / daysInYear) * 100;
+			yearProgress.querySelector('.progress').style.width = `${yearPercentage}%`;
+			yearProgress.querySelector('.progress').textContent = `${yearPercentage.toFixed(0)}%`;
+		}
+
+		function isLeapYear(year) {
+			return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+		}
+
+		// Update progress bars every second
+		setInterval(updateProgressBars, 1000);
+	</script>
+</body>
+</html>
