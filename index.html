@@ -17,6 +17,7 @@
 			margin: 0;
 			padding: 20px;
 			box-sizing: border-box;
+			transition: background-color 0.3s ease;
 		}
 
 		.container {
@@ -28,6 +29,7 @@
 			position: relative;
 			max-width: 400px;
 			width: 100%;
+			transition: background-color 0.3s ease, box-shadow 0.3s ease;
 		}
 
 		.progress-bar {
@@ -38,6 +40,7 @@
 			position: relative;
 			margin-bottom: 15px;
 			overflow: hidden;
+			transition: background-color 0.3s ease;
 		}
 
 		.progress {
@@ -49,7 +52,7 @@
 			position: absolute;
 			left: 0;
 			top: 0;
-			transition: width 0.5s ease-in-out;
+			transition: width 0.5s ease-in-out, background-color 0.3s ease;
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -61,6 +64,7 @@
 			font-size: 14px;
 			font-weight: 600;
 			margin-bottom: 5px;
+			transition: color 0.3s ease;
 		}
 
 		@keyframes progress-pulse {
@@ -73,6 +77,45 @@
 			100% {
 				box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
 			}
+		}
+
+		.dark-mode {
+			background-color: #333;
+			color: #fff;
+		}
+
+		.dark-mode .container {
+			background-color: #444;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+		}
+
+		.dark-mode .progress-bar {
+			background-color: #555;
+		}
+
+		.dark-mode .progress {
+			background-color: #8bc34a;
+		}
+
+		.dark-mode .label {
+			color: #ddd;
+		}
+
+		.theme-toggle {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			background-color: transparent;
+			border: none;
+			cursor: pointer;
+			font-size: 14px;
+			font-weight: 600;
+			color: #333;
+			transition: color 0.3s ease;
+		}
+
+		.dark-mode .theme-toggle {
+			color: #fff;
 		}
 
 		@media (max-width: 480px) {
@@ -104,7 +147,8 @@
 </head>
 <body>
 	<div class="container">
-		<h1>elapsed</h1>
+		<button class="theme-toggle">🌙</button>
+		<h1>elpased</h1>
 		<div>
 			<div class="label">Hour</div>
 			<div id="hourProgress" class="progress-bar">
@@ -176,6 +220,23 @@
 
 		// Update progress bars every second
 		setInterval(updateProgressBars, 1000);
+
+		// Dark mode toggle
+		const themeToggle = document.querySelector('.theme-toggle');
+		const body = document.querySelector('body');
+		const container = document.querySelector('.container');
+		const progressBars = document.querySelectorAll('.progress-bar');
+		const progressElements = document.querySelectorAll('.progress');
+		const labels = document.querySelectorAll('.label');
+
+		themeToggle.addEventListener('click', () => {
+			body.classList.toggle('dark-mode');
+			container.classList.toggle('dark-mode');
+			progressBars.forEach(bar => bar.classList.toggle('dark-mode'));
+			progressElements.forEach(progress => progress.classList.toggle('dark-mode'));
+			labels.forEach(label => label.classList.toggle('dark-mode'));
+			themeToggle.textContent = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+		});
 	</script>
 </body>
 </html>
